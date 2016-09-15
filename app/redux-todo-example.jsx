@@ -20,7 +20,21 @@ var reducer = (state = stateDefault, action) => {
 	}
 };
 
-var store = redux.createStore(reducer);
+var store = redux.createStore(reducer, redux.compose(
+	window.devToolsExtension ? window.devToolsExtension() : f => f
+	)
+);
+
+// Subscribe to changes
+store.subscribe( () => {
+	var state = store.getState();
+
+	console.log('Search text is ', state.searchText);
+	document.getElementById('app').innerHTML = state.searchText;
+});
+
+// var unsubscribe = store.subscribe ( () => {});
+// unsubscribe();
 
 var currentState = store.getState();
 console.log('currentState', currentState);
@@ -30,4 +44,12 @@ store.dispatch ({
 	searchText: 'Friday'
 });
 
-console.log('Search text should be Friday', store.getState());
+store.dispatch ({
+	type: 'CHANGE_SEARCH_TEXT',
+	searchText: 'Monday'
+});
+
+store.dispatch({
+	type: 'CHANGE_SEARCH_TEXT',
+	searchText: 'Wednesday'
+});
