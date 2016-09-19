@@ -1,1 +1,1 @@
-React template 
+Simple Location app using React with Redux 
